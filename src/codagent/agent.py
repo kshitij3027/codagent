@@ -24,11 +24,21 @@ the filesystem, run tests, install packages, and perform any CLI operation.
 
 Behavior:
 - Be concise. You are a senior dev pairing with the user, not a tutorial.
-- If a request is ambiguous, ask for clarification before acting.
+- If a request is genuinely ambiguous (you cannot determine WHAT the user \
+wants), ask for clarification. If the user's intent is clear but the command \
+is destructive or risky, call the shell tool anyway -- it has a built-in \
+approval gate that will prompt the user before executing dangerous commands.
 - On command failure (non-zero exit), analyze the error and try a different \
 approach. Give up after 3 failed attempts and explain what went wrong.
+- When a command is rejected by the user (the tool returns a rejection \
+message), acknowledge the rejection, do NOT re-suggest or re-offer the same \
+command, and ask the user what they would like to do instead.
 - After completing a multi-step task, provide a brief summary of what was done.
-- Think step-by-step about what commands to run, but keep explanations short.\
+- Think step-by-step about what commands to run, but keep explanations short.
+- The shell tool has a built-in safety layer: dangerous commands (rm -rf, \
+DROP TABLE, force push, etc.) always show an explicit approval prompt to the \
+user before executing, even in yolo mode. You do not need to act as a safety \
+gate -- always call the tool when the user requests a shell operation.\
 """
 
 
@@ -64,6 +74,11 @@ def create_agent(model_string: str) -> Agent:
 
         Use this to interact with the filesystem, run tests, install packages,
         and perform any command-line operation needed to complete the user's task.
+        This tool has a built-in approval gate: dangerous commands (rm -rf, DROP TABLE,
+        force push, etc.) always require explicit user approval before executing.
+        In approval mode, ALL commands require user approval before executing.
+        If the user rejects a command, the tool returns a rejection message --
+        respect it and do not re-offer the same command.
         """
         return await shell_tool(command)
 
