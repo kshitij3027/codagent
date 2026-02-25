@@ -92,7 +92,8 @@ None.
 
 ## Session Continuity
 
-**Last updated:** 2026-02-24 (roadmap created)
+**Last updated:** 2026-02-24 (phase 1 context gathered)
+**Last session:** Phase 1 context gathered — `.planning/phases/01-core-agent-loop/01-CONTEXT.md`
 **Next action:** Run `/gsd:plan-phase 1` to create execution plan for Phase 1
 
 ---
