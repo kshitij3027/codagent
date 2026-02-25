@@ -1,9 +1,9 @@
 ---
-status: resolved
+status: complete
 phase: 01-core-agent-loop
-source: [01-01-SUMMARY.md, 01-02-SUMMARY.md, 01-03-SUMMARY.md]
+source: [01-01-SUMMARY.md, 01-02-SUMMARY.md, 01-03-SUMMARY.md, 01-04-SUMMARY.md]
 started: 2026-02-25T09:00:00Z
-updated: 2026-02-25T10:30:00Z
+updated: 2026-02-25T11:00:00Z
 ---
 
 ## Current Test
@@ -24,17 +24,13 @@ result: pass
 expected: At the `>>>` prompt, type a simple request like "list files in the current directory". Agent calls the shell tool (ls), you see the approval prompt showing the command, approve it, and the agent responds with the directory listing.
 result: pass
 
-### 4. Approval Mode Prompt
-expected: Each shell command shows `[command] <the command>` and prompts `Approve? [Y/n]`. Pressing Enter (empty) approves. Typing `n` rejects and the agent says it was rejected and asks what to do instead.
-result: issue
-reported: "1 - pass. 2 - fail. On rejection (n), the agent does not acknowledge the rejection. Instead offers to run the same command again: 'I can run head -n 10 README.md to print the first 10 lines here. Would you like me to run it now?'"
-severity: major
+### 4. Approval Mode - Rejection Handling (re-test)
+expected: Each shell command shows `[command] <the command>` and prompts `Approve? [Y/n]`. Typing `n` rejects and the agent acknowledges the rejection and asks what you'd like to do instead — does NOT re-offer the same command.
+result: pass
 
-### 5. Dangerous Command Blocking
-expected: Ask the agent to run something like `rm -rf /tmp/test` or ask it to force push. Even if you were in yolo mode, dangerous commands always show an explicit approval prompt with "[reason] Dangerous command detected".
-result: issue
-reported: "Slow output (more than 10 seconds latency). Agent asked clarifying questions instead of calling shell tool, so dangerous command detection and [reason] approval line were never triggered. Model behavior bypasses the safety UX entirely."
-severity: major
+### 5. Dangerous Command - Tool Safety Gate (re-test)
+expected: Ask the agent to "run rm -rf /tmp/test". Agent should call the shell tool directly (not ask clarifying questions), triggering the dangerous command approval prompt with "[reason] Dangerous command detected".
+result: pass
 
 ### 6. Output Truncation
 expected: Ask the agent to run a command that produces very long output (e.g., "run: python3 -c 'print(\"x\" * 20000)'"). The output should be truncated with a visible marker like "... [output truncated at 10000 chars, 20000 chars total]".
@@ -48,17 +44,15 @@ result: pass
 expected: While the agent is processing (after you submit a prompt), press Ctrl-C. The current operation should cancel and you should see "[interrupted]" then return to the `>>>` prompt — the program does NOT exit.
 result: pass
 
-### 9. Ctrl-C at Idle Prompt
-expected: At the `>>>` prompt (when nothing is running), press Ctrl-C. The program should exit cleanly with "Goodbye." or similar — no Python traceback.
-result: issue
-reported: "Had to press Ctrl-C multiple times. Got Python traceback from threading module: threading._shutdown -> concurrent.futures.thread._python_exit -> thread.join -> lock.acquire -> KeyboardInterrupt. The run_in_executor thread running input() doesn't get interrupted when SystemExit is raised."
-severity: major
+### 9. Ctrl-C at Idle Prompt (re-test)
+expected: At the `>>>` prompt (when nothing is running), press Ctrl-C once. The program should print "Goodbye." and exit immediately with no Python traceback.
+result: pass
 
 ## Summary
 
 total: 9
-passed: 6
-issues: 3
+passed: 9
+issues: 0
 pending: 0
 skipped: 0
 
