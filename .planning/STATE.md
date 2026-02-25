@@ -8,20 +8,20 @@
 
 **Core Value:** The agent reliably translates natural language coding requests into shell commands, executes them, and iterates until the task is done — with a clear, elegant terminal interface that shows exactly what's happening at every step.
 
-**Current Focus:** Phase 1 — Core Agent Loop
+**Current Focus:** Phase 2 — Terminal UI
 
 ---
 
 ## Current Position
 
-**Active Phase:** 1 — Core Agent Loop
-**Active Plan:** 01-03 (Agent core with system prompt, conversation history, main REPL, signal handling)
-**Status:** In progress
+**Active Phase:** 2 — Terminal UI
+**Active Plan:** 02-01 (first plan of Phase 2)
+**Status:** Phase 1 complete, Phase 2 not started
 
 ```
-Progress: [##--------] 22%
+Progress: [###-------] 33%
 
-Phase 1: Core Agent Loop       [~] In progress (2/3 plans complete)
+Phase 1: Core Agent Loop       [X] Complete (3/3 plans complete)
 Phase 2: Terminal UI           [ ] Not started
 Phase 3: Slash Commands        [ ] Not started
 ```
@@ -33,11 +33,11 @@ Phase 3: Slash Commands        [ ] Not started
 | Metric | Value |
 |--------|-------|
 | Phases total | 3 |
-| Phases complete | 0 |
+| Phases complete | 1 |
 | Requirements total | 19 |
-| Requirements complete | 7 |
+| Requirements complete | 12 |
 | Plans total | 3 |
-| Plans complete | 2 |
+| Plans complete | 3 |
 
 ---
 
@@ -59,6 +59,9 @@ Phase 3: Slash Commands        [ ] Not started
 | In-tool approval gate (not deferred tools) | Simpler than DeferredToolRequests for CLI y/n; approval gate lives inside shell_tool function |
 | Non-blocking input via run_in_executor | Keeps event loop responsive for Ctrl-C during approval prompt (Pitfall 7) |
 | Compiled regex for dangerous patterns | Module-level compilation for O(1) cost on repeated is_dangerous() calls |
+| agent.run() over agent.iter() for Phase 1 | Approval gate is inside tool; no node-level visibility needed until Phase 2 Rich UI |
+| Shell tool registered via wrapper in create_agent() | Keeps tool docstring (what model sees) cleanly defined; delegates to shell_tool from tools module |
+| Non-blocking REPL input via run_in_executor | Phase 1 workaround; Phase 2 replaces with prompt-toolkit prompt_async() |
 
 ### Architecture Notes
 
@@ -98,9 +101,9 @@ None.
 
 ## Session Continuity
 
-**Last updated:** 2026-02-25 (01-02-PLAN complete)
-**Last session:** Completed 01-02-PLAN.md -- shell tool with async execution, truncation, timeout, approval gate, dangerous command detection
-**Next action:** Execute 01-03-PLAN.md (agent core with system prompt, conversation history, main REPL loop, signal handling)
+**Last updated:** 2026-02-25 (01-03-PLAN complete -- Phase 1 done)
+**Last session:** Completed 01-03-PLAN.md -- agent core with system prompt, conversation history, main REPL, two-tier Ctrl-C, entry point
+**Next action:** Plan and execute Phase 2 (Terminal UI -- Rich rendering, prompt-toolkit input, streaming)
 
 ---
 *State initialized: 2026-02-24*

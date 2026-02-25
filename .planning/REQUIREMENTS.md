@@ -9,9 +9,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Agent Core
 
-- [ ] **CORE-01**: Agent loop using Pydantic AI receives user prompt and iteratively calls tools until task is complete
-- [ ] **CORE-02**: System prompt instructs model it is a coding agent, should reason about problems, and use the shell tool
-- [ ] **CORE-03**: Conversation history maintained in memory across turns within a session
+- [x] **CORE-01**: Agent loop using Pydantic AI receives user prompt and iteratively calls tools until task is complete
+- [x] **CORE-02**: System prompt instructs model it is a coding agent, should reason about problems, and use the shell tool
+- [x] **CORE-03**: Conversation history maintained in memory across turns within a session
 - [ ] **CORE-04**: User can reset conversation via `/new` command, clearing history but preserving config
 
 ### Shell Execution
@@ -41,8 +41,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Signal Handling
 
-- [ ] **SGNL-01**: Ctrl-C during agent work aborts current operation and returns to user prompt
-- [ ] **SGNL-02**: Ctrl-C at idle prompt exits the program
+- [x] **SGNL-01**: Ctrl-C during agent work aborts current operation and returns to user prompt
+- [x] **SGNL-02**: Ctrl-C at idle prompt exits the program
 
 ## v2 Requirements
 
@@ -83,9 +83,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CORE-01 | Phase 1 | Pending |
-| CORE-02 | Phase 1 | Pending |
-| CORE-03 | Phase 1 | Pending |
+| CORE-01 | Phase 1 | Complete |
+| CORE-02 | Phase 1 | Complete |
+| CORE-03 | Phase 1 | Complete |
 | CORE-04 | Phase 3 | Pending |
 | SHEL-01 | Phase 1 | Complete |
 | SHEL-02 | Phase 1 | Complete |
@@ -100,8 +100,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DISP-02 | Phase 2 | Pending |
 | DISP-03 | Phase 2 | Pending |
 | DISP-04 | Phase 2 | Pending |
-| SGNL-01 | Phase 1 | Pending |
-| SGNL-02 | Phase 1 | Pending |
+| SGNL-01 | Phase 1 | Complete |
+| SGNL-02 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 19 total
@@ -110,4 +110,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-24*
-*Last updated: 2026-02-25 after 01-02-PLAN execution*
+*Last updated: 2026-02-25 after 01-03-PLAN execution (Phase 1 complete)*

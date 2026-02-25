@@ -9,7 +9,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Core Agent Loop** - A safe, functional coding agent with plain-text output — the full working system before any UI polish
+- [x] **Phase 1: Core Agent Loop** - A safe, functional coding agent with plain-text output — the full working system before any UI polish
 - [ ] **Phase 2: Terminal UI** - Rich streaming display, prompt-toolkit input, and polished real-time output panels
 - [ ] **Phase 3: Slash Commands and Runtime Control** - `/model`, `/approval`, `/new` slash commands with tab completion and runtime model/mode switching
 
@@ -35,7 +35,7 @@
 Plans:
 - [x] 01-01-PLAN.md — Project scaffolding, config loading, and model provider registry
 - [x] 01-02-PLAN.md — Shell tool with async execution, truncation, timeout, approval gate, and dangerous command blocklist
-- [ ] 01-03-PLAN.md — Agent core with system prompt, conversation history, main REPL loop, and signal handling
+- [x] 01-03-PLAN.md — Agent core with system prompt, conversation history, main REPL loop, and signal handling
 
 ---
 
@@ -75,7 +75,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Agent Loop | 2/3 | In progress | - |
+| 1. Core Agent Loop | 3/3 | Complete | 2026-02-25 |
 | 2. Terminal UI | 0/0 | Not started | - |
 | 3. Slash Commands and Runtime Control | 0/0 | Not started | - |
 
@@ -111,4 +111,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-02-24*
-*Last updated: 2026-02-25 after 01-02-PLAN execution*
+*Last updated: 2026-02-25 after 01-03-PLAN execution (Phase 1 complete)*
