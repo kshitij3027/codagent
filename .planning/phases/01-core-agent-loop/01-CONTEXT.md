@@ -51,7 +51,7 @@ A working terminal coding agent that receives natural language prompts, executes
 <deferred>
 ## Deferred Ideas
 
-None — discussion stayed within phase scope
+- Dedicated file read/write/edit tools — currently shell handles all filesystem interaction; consider as v2 enhancement if shell-only proves limiting
 
 </deferred>
 
@@ -59,3 +59,4 @@ None — discussion stayed within phase scope
 
 *Phase: 01-core-agent-loop*
 *Context gathered: 2026-02-24*
+*Updated: 2026-02-24 — added deferred file tools idea*
