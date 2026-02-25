@@ -1,9 +1,9 @@
 ---
-status: diagnosed
+status: resolved
 phase: 01-core-agent-loop
 source: [01-01-SUMMARY.md, 01-02-SUMMARY.md, 01-03-SUMMARY.md]
 started: 2026-02-25T09:00:00Z
-updated: 2026-02-25T09:45:00Z
+updated: 2026-02-25T10:30:00Z
 ---
 
 ## Current Test
@@ -65,7 +65,7 @@ skipped: 0
 ## Gaps
 
 - truth: "On command rejection (typing n), agent acknowledges rejection and asks what to do instead"
-  status: failed
+  status: resolved
   reason: "User reported: On rejection, agent ignores the rejection message and offers to run the same command again instead of acknowledging it was blocked"
   severity: major
   test: 4
@@ -78,7 +78,7 @@ skipped: 0
   debug_session: ".planning/debug/rejection-not-acknowledged.md"
 
 - truth: "Dangerous commands trigger explicit approval prompt with [reason] Dangerous command detected line"
-  status: failed
+  status: resolved
   reason: "User reported: Agent asked clarifying questions instead of calling shell tool, so dangerous command detection was never triggered. Also slow response latency (>10s)"
   severity: major
   test: 5
@@ -94,7 +94,7 @@ skipped: 0
   debug_session: ".planning/debug/dangerous-command-not-triggered.md"
 
 - truth: "Ctrl-C at idle prompt exits the program cleanly without Python traceback"
-  status: failed
+  status: resolved
   reason: "User reported: Multiple Ctrl-C needed. Threading traceback from run_in_executor input() thread not being interrupted on SystemExit"
   severity: major
   test: 9
