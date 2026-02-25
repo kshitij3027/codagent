@@ -13,6 +13,7 @@ stdlib ``signal.signal()`` approach.
 from __future__ import annotations
 
 import asyncio
+import os
 import signal
 
 
@@ -43,7 +44,14 @@ def setup_signal_handler(
             # Agent is running -- cancel it (returns to prompt)
             state.agent_task.cancel()
         else:
-            # Idle -- exit the program
-            raise SystemExit(0)
+            # Idle -- exit the program.
+            # Use os._exit(0) instead of raise SystemExit(0) because the
+            # input() thread (run_in_executor) blocks Python's shutdown
+            # sequence — threading._shutdown tries to join the blocked
+            # thread, causing a deadlock and traceback.  os._exit bypasses
+            # the asyncio/threading shutdown entirely.  Safe here because
+            # there is no state to persist at idle.
+            print("\nGoodbye.")
+            os._exit(0)
 
     loop.add_signal_handler(signal.SIGINT, _handle_sigint)
