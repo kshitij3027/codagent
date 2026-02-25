@@ -30,12 +30,13 @@
   4. Shell output longer than ~10K characters is truncated with a visible marker; the agent continues working rather than failing or flooding the context
   5. Ctrl-C during an active agent run aborts the run and returns to the user prompt; Ctrl-C at the idle prompt exits the program
 
-**Plans:** 3/3 plans complete
+**Plans:** 4 plans (3 complete + 1 gap closure)
 
 Plans:
 - [x] 01-01-PLAN.md — Project scaffolding, config loading, and model provider registry
 - [x] 01-02-PLAN.md — Shell tool with async execution, truncation, timeout, approval gate, and dangerous command blocklist
 - [x] 01-03-PLAN.md — Agent core with system prompt, conversation history, main REPL loop, and signal handling
+- [ ] 01-04-PLAN.md — UAT gap closure: fix rejection handling, dangerous command flow, and Ctrl-C idle exit
 
 ---
 
@@ -75,7 +76,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Agent Loop | 3/3 | Complete    | 2026-02-25 |
+| 1. Core Agent Loop | 3/4 | UAT gap closure pending | - |
 | 2. Terminal UI | 0/0 | Not started | - |
 | 3. Slash Commands and Runtime Control | 0/0 | Not started | - |
 
@@ -111,4 +112,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-02-24*
-*Last updated: 2026-02-25 after 01-03-PLAN execution (Phase 1 complete)*
+*Last updated: 2026-02-25 after UAT gap closure planning (01-04-PLAN created)*
