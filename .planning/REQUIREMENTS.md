@@ -16,9 +16,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Shell Execution
 
-- [ ] **SHEL-01**: Single `shell` tool takes a command string, executes it, and returns stdout + stderr
-- [ ] **SHEL-02**: Shell output truncated at ~10K characters to prevent context window overflow
-- [ ] **SHEL-03**: Subprocess has a timeout to kill commands that hang (e.g. interactive prompts)
+- [x] **SHEL-01**: Single `shell` tool takes a command string, executes it, and returns stdout + stderr
+- [x] **SHEL-02**: Shell output truncated at ~10K characters to prevent context window overflow
+- [x] **SHEL-03**: Subprocess has a timeout to kill commands that hang (e.g. interactive prompts)
 
 ### Model Support
 
@@ -28,8 +28,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Execution Modes
 
-- [ ] **MODE-01**: Approval mode (default): user confirms each tool call before execution
-- [ ] **MODE-02**: Yolo mode: tool calls execute automatically without user confirmation
+- [x] **MODE-01**: Approval mode (default): user confirms each tool call before execution
+- [x] **MODE-02**: Yolo mode: tool calls execute automatically without user confirmation
 - [ ] **MODE-03**: User can toggle between approval and yolo via `/approval` slash command
 
 ### Terminal UI
@@ -87,14 +87,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CORE-02 | Phase 1 | Pending |
 | CORE-03 | Phase 1 | Pending |
 | CORE-04 | Phase 3 | Pending |
-| SHEL-01 | Phase 1 | Pending |
-| SHEL-02 | Phase 1 | Pending |
-| SHEL-03 | Phase 1 | Pending |
+| SHEL-01 | Phase 1 | Complete |
+| SHEL-02 | Phase 1 | Complete |
+| SHEL-03 | Phase 1 | Complete |
 | MODL-01 | Phase 1 | Complete |
 | MODL-02 | Phase 1 | Complete |
 | MODL-03 | Phase 3 | Pending |
-| MODE-01 | Phase 1 | Pending |
-| MODE-02 | Phase 1 | Pending |
+| MODE-01 | Phase 1 | Complete |
+| MODE-02 | Phase 1 | Complete |
 | MODE-03 | Phase 3 | Pending |
 | DISP-01 | Phase 2 | Pending |
 | DISP-02 | Phase 2 | Pending |
@@ -110,4 +110,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-24*
-*Last updated: 2026-02-25 after 01-01-PLAN execution*
+*Last updated: 2026-02-25 after 01-02-PLAN execution*

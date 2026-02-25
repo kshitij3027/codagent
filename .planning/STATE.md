@@ -15,13 +15,13 @@
 ## Current Position
 
 **Active Phase:** 1 — Core Agent Loop
-**Active Plan:** 01-02 (Shell tool with async execution)
+**Active Plan:** 01-03 (Agent core with system prompt, conversation history, main REPL, signal handling)
 **Status:** In progress
 
 ```
-Progress: [#---------] 11%
+Progress: [##--------] 22%
 
-Phase 1: Core Agent Loop       [~] In progress (1/3 plans complete)
+Phase 1: Core Agent Loop       [~] In progress (2/3 plans complete)
 Phase 2: Terminal UI           [ ] Not started
 Phase 3: Slash Commands        [ ] Not started
 ```
@@ -35,9 +35,9 @@ Phase 3: Slash Commands        [ ] Not started
 | Phases total | 3 |
 | Phases complete | 0 |
 | Requirements total | 19 |
-| Requirements complete | 2 |
+| Requirements complete | 7 |
 | Plans total | 3 |
-| Plans complete | 1 |
+| Plans complete | 2 |
 
 ---
 
@@ -56,12 +56,15 @@ Phase 3: Slash Commands        [ ] Not started
 | Dataclass for Settings (not Pydantic BaseSettings) | Simple, mutable mode field, no extra dependency |
 | Dynamic OpenRouter model resolution | Model names change without notice; env var override for resilience |
 | Singleton settings with get_settings() | Cross-module config access with explicit initialization guard |
+| In-tool approval gate (not deferred tools) | Simpler than DeferredToolRequests for CLI y/n; approval gate lives inside shell_tool function |
+| Non-blocking input via run_in_executor | Keeps event loop responsive for Ctrl-C during approval prompt (Pitfall 7) |
+| Compiled regex for dangerous patterns | Module-level compilation for O(1) cost on repeated is_dangerous() calls |
 
 ### Architecture Notes
 
 - Four-layer system: Input (prompt-toolkit) → Agent Core (pydantic-ai ReAct) → Tool Execution (shell tool + approval gate) → Output (Rich)
 - Build order within Phase 1: `config.py` → `models.py` → `tools/shell.py` → `conversation.py` → `agent.py` → `main.py`
-- Use `subprocess.run(capture_output=True)` — never `Popen + wait()` (pipe deadlock risk)
+- Use `asyncio.create_subprocess_shell` + `communicate()` + `wait_for()` — never `subprocess.run()` (blocks event loop) or `Popen + wait()` (pipe deadlock risk)
 - Use `loop.add_signal_handler(signal.SIGINT, handler)` for Ctrl-C
 - Use `prompt_async()` not `prompt()` in prompt-toolkit (blocking vs async)
 - Use `patch_stdout()` for Rich + prompt-toolkit coexistence
@@ -69,7 +72,7 @@ Phase 3: Slash Commands        [ ] Not started
 ### Research Flags (verify at implementation time)
 
 - OpenRouter Groq model name strings change without notice — verify against live API before implementing model registry
-- Pydantic AI deferred tools API (`ApprovalRequired`/`DeferredToolRequests`) — verify against v1.63.0 docs; simpler alternative is approval gate inside the tool function before subprocess execution
+- ~~Pydantic AI deferred tools API~~ -- RESOLVED: used in-tool approval gate (simpler for CLI y/n prompt)
 - Rich Live + asyncio async patterns — community-confirmed but not in official Rich docs; test the specific combination (Live + Spinner + streaming text + prompt-toolkit `patch_stdout()`) early in Phase 2
 - Cross-provider history on `/model` switch — confirm exact behavior of `result.all_messages()` when switching providers
 
@@ -95,9 +98,9 @@ None.
 
 ## Session Continuity
 
-**Last updated:** 2026-02-25 (01-01-PLAN complete)
-**Last session:** Completed 01-01-PLAN.md — project scaffolding, config loading, model registry
-**Next action:** Execute 01-02-PLAN.md (shell tool with async execution, truncation, timeout, approval gate)
+**Last updated:** 2026-02-25 (01-02-PLAN complete)
+**Last session:** Completed 01-02-PLAN.md -- shell tool with async execution, truncation, timeout, approval gate, dangerous command detection
+**Next action:** Execute 01-03-PLAN.md (agent core with system prompt, conversation history, main REPL loop, signal handling)
 
 ---
 *State initialized: 2026-02-24*
