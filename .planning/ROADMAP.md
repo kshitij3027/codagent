@@ -33,7 +33,7 @@
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project scaffolding, config loading, and model provider registry
+- [x] 01-01-PLAN.md — Project scaffolding, config loading, and model provider registry
 - [ ] 01-02-PLAN.md — Shell tool with async execution, truncation, timeout, approval gate, and dangerous command blocklist
 - [ ] 01-03-PLAN.md — Agent core with system prompt, conversation history, main REPL loop, and signal handling
 
@@ -75,7 +75,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Agent Loop | 0/3 | Planned | - |
+| 1. Core Agent Loop | 1/3 | In progress | - |
 | 2. Terminal UI | 0/0 | Not started | - |
 | 3. Slash Commands and Runtime Control | 0/0 | Not started | - |
 
@@ -111,4 +111,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-02-24*
-*Last updated: 2026-02-25 after Phase 1 planning*
+*Last updated: 2026-02-25 after 01-01-PLAN execution*

@@ -15,13 +15,13 @@
 ## Current Position
 
 **Active Phase:** 1 — Core Agent Loop
-**Active Plan:** None (planning not yet started)
-**Status:** Not started
+**Active Plan:** 01-02 (Shell tool with async execution)
+**Status:** In progress
 
 ```
-Progress: [----------] 0%
+Progress: [#---------] 11%
 
-Phase 1: Core Agent Loop       [ ] Not started
+Phase 1: Core Agent Loop       [~] In progress (1/3 plans complete)
 Phase 2: Terminal UI           [ ] Not started
 Phase 3: Slash Commands        [ ] Not started
 ```
@@ -35,9 +35,9 @@ Phase 3: Slash Commands        [ ] Not started
 | Phases total | 3 |
 | Phases complete | 0 |
 | Requirements total | 19 |
-| Requirements complete | 0 |
-| Plans total | TBD |
-| Plans complete | 0 |
+| Requirements complete | 2 |
+| Plans total | 3 |
+| Plans complete | 1 |
 
 ---
 
@@ -53,6 +53,9 @@ Phase 3: Slash Commands        [ ] Not started
 | Approval mode as default | Safe default; prevents unintended command execution |
 | Build loop before UI | All 10 critical pitfalls are Phase 1 concerns; safe before pretty |
 | Reset history on /model switch | Cross-provider history transfer is problematic; clean reset is safer |
+| Dataclass for Settings (not Pydantic BaseSettings) | Simple, mutable mode field, no extra dependency |
+| Dynamic OpenRouter model resolution | Model names change without notice; env var override for resilience |
+| Singleton settings with get_settings() | Cross-module config access with explicit initialization guard |
 
 ### Architecture Notes
 
@@ -81,7 +84,7 @@ Phase 3: Slash Commands        [ ] Not started
 
 ### Todos
 
-- [ ] Verify current OpenRouter Groq model name strings before implementing model registry (Phase 1)
+- [x] Verify current OpenRouter Groq model name strings before implementing model registry (Phase 1) -- made configurable via OPENROUTER_MODEL env var
 - [ ] Test Rich Live + asyncio combination early in Phase 2 before building full display layer
 
 ### Blockers
@@ -92,9 +95,9 @@ None.
 
 ## Session Continuity
 
-**Last updated:** 2026-02-24 (phase 1 context gathered)
-**Last session:** Phase 1 context gathered — `.planning/phases/01-core-agent-loop/01-CONTEXT.md`
-**Next action:** Run `/gsd:plan-phase 1` to create execution plan for Phase 1
+**Last updated:** 2026-02-25 (01-01-PLAN complete)
+**Last session:** Completed 01-01-PLAN.md — project scaffolding, config loading, model registry
+**Next action:** Execute 01-02-PLAN.md (shell tool with async execution, truncation, timeout, approval gate)
 
 ---
 *State initialized: 2026-02-24*

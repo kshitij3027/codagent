@@ -22,8 +22,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Model Support
 
-- [ ] **MODL-01**: Environment variables loaded from `.env` file on startup (API keys, config)
-- [ ] **MODL-02**: Support three model providers: GPT-5 (OpenAI), Claude 4.5 (Anthropic), Groq Code (OpenRouter)
+- [x] **MODL-01**: Environment variables loaded from `.env` file on startup (API keys, config)
+- [x] **MODL-02**: Support three model providers: GPT-5 (OpenAI), Claude 4.5 (Anthropic), Groq Code (OpenRouter)
 - [ ] **MODL-03**: User can switch between models at runtime via `/model` slash command
 
 ### Execution Modes
@@ -90,8 +90,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHEL-01 | Phase 1 | Pending |
 | SHEL-02 | Phase 1 | Pending |
 | SHEL-03 | Phase 1 | Pending |
-| MODL-01 | Phase 1 | Pending |
-| MODL-02 | Phase 1 | Pending |
+| MODL-01 | Phase 1 | Complete |
+| MODL-02 | Phase 1 | Complete |
 | MODL-03 | Phase 3 | Pending |
 | MODE-01 | Phase 1 | Pending |
 | MODE-02 | Phase 1 | Pending |
@@ -110,4 +110,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-24*
-*Last updated: 2026-02-24 after roadmap creation*
+*Last updated: 2026-02-25 after 01-01-PLAN execution*
