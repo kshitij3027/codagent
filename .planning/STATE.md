@@ -16,7 +16,7 @@
 
 **Active Phase:** 2 — Terminal UI
 **Active Plan:** 02-01 (first plan of Phase 2)
-**Status:** Phase 1 complete, Phase 2 not started
+**Status:** Milestone complete
 
 ```
 Progress: [###-------] 33%

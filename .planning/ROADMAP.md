@@ -30,7 +30,7 @@
   4. Shell output longer than ~10K characters is truncated with a visible marker; the agent continues working rather than failing or flooding the context
   5. Ctrl-C during an active agent run aborts the run and returns to the user prompt; Ctrl-C at the idle prompt exits the program
 
-**Plans:** 3 plans
+**Plans:** 3/3 plans complete
 
 Plans:
 - [x] 01-01-PLAN.md — Project scaffolding, config loading, and model provider registry
@@ -75,7 +75,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Agent Loop | 3/3 | Complete | 2026-02-25 |
+| 1. Core Agent Loop | 3/3 | Complete    | 2026-02-25 |
 | 2. Terminal UI | 0/0 | Not started | - |
 | 3. Slash Commands and Runtime Control | 0/0 | Not started | - |
 
