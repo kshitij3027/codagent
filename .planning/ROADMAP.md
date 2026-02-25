@@ -30,7 +30,12 @@
   4. Shell output longer than ~10K characters is truncated with a visible marker; the agent continues working rather than failing or flooding the context
   5. Ctrl-C during an active agent run aborts the run and returns to the user prompt; Ctrl-C at the idle prompt exits the program
 
-**Plans**: TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Project scaffolding, config loading, and model provider registry
+- [ ] 01-02-PLAN.md — Shell tool with async execution, truncation, timeout, approval gate, and dangerous command blocklist
+- [ ] 01-03-PLAN.md — Agent core with system prompt, conversation history, main REPL loop, and signal handling
 
 ---
 
@@ -70,7 +75,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Agent Loop | 0/0 | Not started | - |
+| 1. Core Agent Loop | 0/3 | Planned | - |
 | 2. Terminal UI | 0/0 | Not started | - |
 | 3. Slash Commands and Runtime Control | 0/0 | Not started | - |
 
@@ -106,4 +111,4 @@
 
 ---
 *Roadmap created: 2026-02-24*
-*Last updated: 2026-02-24 after initial creation*
+*Last updated: 2026-02-25 after Phase 1 planning*
