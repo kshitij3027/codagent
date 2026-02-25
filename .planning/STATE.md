@@ -21,7 +21,7 @@
 ```
 Progress: [###-------] 33%
 
-Phase 1: Core Agent Loop       [X] Complete (3/3 plans complete)
+Phase 1: Core Agent Loop       [X] Complete (4/4 plans complete, incl. UAT gap closure)
 Phase 2: Terminal UI           [ ] Not started
 Phase 3: Slash Commands        [ ] Not started
 ```
@@ -36,8 +36,8 @@ Phase 3: Slash Commands        [ ] Not started
 | Phases complete | 1 |
 | Requirements total | 19 |
 | Requirements complete | 12 |
-| Plans total | 3 |
-| Plans complete | 3 |
+| Plans total | 4 |
+| Plans complete | 4 |
 
 ---
 
@@ -62,6 +62,9 @@ Phase 3: Slash Commands        [ ] Not started
 | agent.run() over agent.iter() for Phase 1 | Approval gate is inside tool; no node-level visibility needed until Phase 2 Rich UI |
 | Shell tool registered via wrapper in create_agent() | Keeps tool docstring (what model sees) cleanly defined; delegates to shell_tool from tools module |
 | Non-blocking REPL input via run_in_executor | Phase 1 workaround; Phase 2 replaces with prompt-toolkit prompt_async() |
+| os._exit(0) for idle Ctrl-C | run_in_executor input() thread blocks Python shutdown; os._exit bypasses deadlock; Phase 2 prompt-toolkit eliminates this |
+| Safety architecture in system prompt + docstring | Prevents model self-censoring on dangerous commands; tool-level approval gate handles safety |
+| Rejection rule in system prompt (not tool code) | Tool-side rejection messages were already correct; model behavior was the problem |
 
 ### Architecture Notes
 
@@ -101,8 +104,8 @@ None.
 
 ## Session Continuity
 
-**Last updated:** 2026-02-25 (01-03-PLAN complete -- Phase 1 done)
-**Last session:** Completed 01-03-PLAN.md -- agent core with system prompt, conversation history, main REPL, two-tier Ctrl-C, entry point
+**Last updated:** 2026-02-25 (01-04-PLAN complete -- UAT gap closure done)
+**Last session:** Completed 01-04-PLAN.md -- fixed 3 UAT failures: rejection handling, dangerous command flow, clean Ctrl-C exit
 **Next action:** Plan and execute Phase 2 (Terminal UI -- Rich rendering, prompt-toolkit input, streaming)
 
 ---
