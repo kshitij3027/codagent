@@ -52,7 +52,13 @@ Plans:
   3. Tool call commands and their outputs are displayed in real-time as they execute, not batched after completion
   4. The input prompt supports up-arrow history navigation and tab completion for slash commands
 
-**Plans**: TBD
+**Plans:** 4 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Rich display layer: panel factory, spinner, streaming text and tool output
+- [ ] 02-02-PLAN.md — prompt-toolkit input: PromptSession, FileHistory, slash command completion, key bindings
+- [ ] 02-03-PLAN.md — Agent streaming: switch to agent.iter(), streaming shell execution, styled approval
+- [ ] 02-04-PLAN.md — REPL integration: wire display + input + streaming into main loop, clean signal handling
 
 ---
 
@@ -77,7 +83,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Core Agent Loop | 3/4 | UAT gap closure pending | - |
-| 2. Terminal UI | 0/0 | Not started | - |
+| 2. Terminal UI | 0/4 | Planned | - |
 | 3. Slash Commands and Runtime Control | 0/0 | Not started | - |
 
 ---
