@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-02-26T21:42:31.444Z"
+last_updated: "2026-02-26T21:48:35Z"
 progress:
   total_phases: 2
   completed_phases: 1
   total_plans: 8
-  completed_plans: 6
+  completed_plans: 7
 ---
 
 # Project State: Coding Agent
@@ -28,14 +28,14 @@ progress:
 ## Current Position
 
 **Active Phase:** 2 — Terminal UI
-**Active Plan:** 02-03 (next plan of Phase 2)
+**Active Plan:** 02-04 (next plan of Phase 2)
 **Status:** In progress
 
 ```
-Progress: [######----] 75%
+Progress: [########--] 87.5%
 
 Phase 1: Core Agent Loop       [X] Complete (4/4 plans complete, incl. UAT gap closure)
-Phase 2: Terminal UI           [~] In progress (2/4 plans complete)
+Phase 2: Terminal UI           [~] In progress (3/4 plans complete)
 Phase 3: Slash Commands        [ ] Not started
 ```
 
@@ -50,9 +50,10 @@ Phase 3: Slash Commands        [ ] Not started
 | Requirements total | 19 |
 | Requirements complete | 15 |
 | Plans total | 8 |
-| Plans complete | 6 |
+| Plans complete | 7 |
 
 ---
+| Phase 02 P03 | 4min | 2 tasks | 2 files |
 | Phase 02 P02 | 2min | 1 tasks | 4 files |
 | Phase 02 P01 | 2min | 2 tasks | 1 files |
 
@@ -85,12 +86,16 @@ Phase 3: Slash Commands        [ ] Not started
 | transient=True on all streaming Live contexts | Prevents duplicate output (Live content + final static panel); only final Markdown-rendered panel remains |
 | refresh_per_second=12 for Live displays | Balances smoothness vs CPU per research Pitfall 3 |
 | Live context for spinner (not Console.status) | Enables flicker-free update() transition to response panel without stop/restart |
+| Module-level _display with set_display() in shell.py | Pydantic AI constrains tool signatures; module-level ref lets shell_tool access Display without changing its parameter list |
+| Async wrapper for sync stream_tool_line | on_line callback typed as Awaitable; thin async wrapper bridges sync Display method |
+| Shell output not re-displayed on FunctionToolResultEvent | Already streamed line-by-line via on_line callback during execution; avoids duplicate display |
 
 ### Architecture Notes
 
 - Four-layer system: Input (prompt-toolkit) → Agent Core (pydantic-ai ReAct) → Tool Execution (shell tool + approval gate) → Output (Rich)
 - Build order within Phase 1: `config.py` → `models.py` → `tools/shell.py` → `conversation.py` → `agent.py` → `main.py`
 - Use `asyncio.create_subprocess_shell` + `communicate()` + `wait_for()` — never `subprocess.run()` (blocks event loop) or `Popen + wait()` (pipe deadlock risk)
+- Streaming execution: `asyncio.gather(read_stream(stdout), read_stream(stderr))` for concurrent pipe reading (avoids deadlock)
 - Use `loop.add_signal_handler(signal.SIGINT, handler)` for Ctrl-C
 - Use `prompt_async()` not `prompt()` in prompt-toolkit (blocking vs async)
 - Use `patch_stdout()` for Rich + prompt-toolkit coexistence
@@ -124,9 +129,9 @@ None.
 
 ## Session Continuity
 
-**Last updated:** 2026-02-26 (02-01-PLAN complete -- Rich display layer done)
-**Last session:** 2026-02-26T21:42:31.443Z
-**Next action:** Execute Phase 2 Plan 03 (streaming agent iteration with agent.iter())
+**Last updated:** 2026-02-26 (02-03-PLAN complete -- agent streaming iteration done)
+**Last session:** 2026-02-26T21:48:35Z
+**Next action:** Execute Phase 2 Plan 04 (REPL integration — wire streaming into main loop)
 
 ---
 *State initialized: 2026-02-24*

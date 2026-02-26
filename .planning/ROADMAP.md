@@ -57,7 +57,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Rich display layer: panel factory, spinner, streaming text and tool output
 - [x] 02-02-PLAN.md — prompt-toolkit input: PromptSession, FileHistory, slash command completion, key bindings
-- [ ] 02-03-PLAN.md — Agent streaming: switch to agent.iter(), streaming shell execution, styled approval
+- [x] 02-03-PLAN.md — Agent streaming: switch to agent.iter(), streaming shell execution, styled approval
 - [ ] 02-04-PLAN.md — REPL integration: wire display + input + streaming into main loop, clean signal handling
 
 ---
