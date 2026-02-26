@@ -131,7 +131,7 @@ class Display:
             spinner,
             console=self.console,
             refresh_per_second=12,
-            transient=False,
+            transient=True,
         )
         self._live.start()
         self._spinner_active = True
@@ -180,7 +180,7 @@ class Display:
                 empty_panel,
                 console=self.console,
                 refresh_per_second=12,
-                transient=False,
+                transient=True,
             )
             self._live.start()
 
@@ -235,7 +235,7 @@ class Display:
             empty_panel,
             console=self.console,
             refresh_per_second=12,
-            transient=False,
+            transient=True,
         )
         self._live.start()
 
