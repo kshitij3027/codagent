@@ -1,3 +1,16 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: executing
+last_updated: "2026-02-26T21:40:54.372Z"
+progress:
+  total_phases: 2
+  completed_phases: 1
+  total_plans: 8
+  completed_plans: 5
+---
+
 # Project State: Coding Agent
 
 *Living memory for the project. Updated at every milestone.*
@@ -15,14 +28,14 @@
 ## Current Position
 
 **Active Phase:** 2 — Terminal UI
-**Active Plan:** 02-01 (first plan of Phase 2)
-**Status:** Milestone complete
+**Active Plan:** 02-03 (next plan of Phase 2)
+**Status:** In progress
 
 ```
-Progress: [###-------] 33%
+Progress: [####------] 42%
 
 Phase 1: Core Agent Loop       [X] Complete (4/4 plans complete, incl. UAT gap closure)
-Phase 2: Terminal UI           [ ] Not started
+Phase 2: Terminal UI           [~] In progress (1/4 plans complete)
 Phase 3: Slash Commands        [ ] Not started
 ```
 
@@ -36,10 +49,11 @@ Phase 3: Slash Commands        [ ] Not started
 | Phases complete | 1 |
 | Requirements total | 19 |
 | Requirements complete | 12 |
-| Plans total | 4 |
-| Plans complete | 4 |
+| Plans total | 8 |
+| Plans complete | 5 |
 
 ---
+| Phase 02 P02 | 2min | 1 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -65,6 +79,8 @@ Phase 3: Slash Commands        [ ] Not started
 | os._exit(0) for idle Ctrl-C | run_in_executor input() thread blocks Python shutdown; os._exit bypasses deadlock; Phase 2 prompt-toolkit eliminates this |
 | Safety architecture in system prompt + docstring | Prevents model self-censoring on dangerous commands; tool-level approval gate handles safety |
 | Rejection rule in system prompt (not tool code) | Tool-side rejection messages were already correct; model behavior was the problem |
+| Escape+Enter for multi-line input | Shift+Enter not portable across terminals; Escape+Enter is the reliable alternative per prompt-toolkit community |
+| SlashCommandCompleter only on standalone slash fragments | Prevents false trigger mid-sentence; only completes when text is purely a slash-command prefix |
 
 ### Architecture Notes
 
@@ -104,9 +120,9 @@ None.
 
 ## Session Continuity
 
-**Last updated:** 2026-02-25 (01-04-PLAN complete -- UAT gap closure done)
-**Last session:** 2026-02-26T08:14:01.544Z
-**Next action:** Plan and execute Phase 2 (Terminal UI -- Rich rendering, prompt-toolkit input, streaming)
+**Last updated:** 2026-02-26 (02-02-PLAN complete -- input layer done)
+**Last session:** 2026-02-26T21:40:54.371Z
+**Next action:** Execute Phase 2 Plan 03 (streaming agent iteration with agent.iter())
 
 ---
 *State initialized: 2026-02-24*

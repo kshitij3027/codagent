@@ -37,7 +37,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **DISP-01**: Rich-based streaming output with thinking spinner during model inference
 - [ ] **DISP-02**: Each interaction displayed in a styled box with color coding
 - [ ] **DISP-03**: Tool call inputs and outputs displayed in panels as they happen in real-time
-- [ ] **DISP-04**: Prompt Toolkit input with command history and slash command completion
+- [x] **DISP-04**: Prompt Toolkit input with command history and slash command completion
 
 ### Signal Handling
 
@@ -99,7 +99,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DISP-01 | Phase 2 | Pending |
 | DISP-02 | Phase 2 | Pending |
 | DISP-03 | Phase 2 | Pending |
-| DISP-04 | Phase 2 | Pending |
+| DISP-04 | Phase 2 | Complete |
 | SGNL-01 | Phase 1 | Complete |
 | SGNL-02 | Phase 1 | Complete |
 
