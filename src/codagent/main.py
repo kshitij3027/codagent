@@ -2,19 +2,27 @@
 
 This is the entry point that ties everything together: loads config, creates
 the agent, sets up signal handling, and runs the interactive prompt loop.
+
+Phase 2 integration: Rich display (panels, spinner, streaming), prompt-toolkit
+input (async, history, completions, multi-line), and streaming agent execution
+via agent.iter() with node-level display control.
 """
 
 from __future__ import annotations
 
 import asyncio
-import sys
+
+from prompt_toolkit.patch_stdout import patch_stdout
 
 from codagent import __version__
-from codagent.agent import create_agent, run_agent_turn
+from codagent.agent import create_agent, run_agent_turn_streaming
 from codagent.config import load_settings
 from codagent.conversation import ConversationHistory
-from codagent.models import get_default_model, get_model
+from codagent.display import Display
+from codagent.input import create_prompt_session, get_user_input
+from codagent.models import get_default_model
 from codagent.signals import SignalState, setup_signal_handler
+from codagent.tools.shell import set_display
 
 
 # ---------------------------------------------------------------------------
@@ -25,9 +33,13 @@ from codagent.signals import SignalState, setup_signal_handler
 async def async_main() -> None:
     """Run the interactive coding agent REPL.
 
-    1. Startup: load settings, create agent, set up signal handler, print banner.
-    2. REPL loop: prompt -> agent turn -> print response -> repeat.
+    1. Startup: load settings, create agent, set up signal handler, render banner.
+    2. REPL loop: prompt (prompt-toolkit) -> echo user panel -> streaming agent
+       turn -> repeat.
     3. Shutdown: print goodbye and exit.
+
+    Uses ``patch_stdout()`` to prevent Rich console output from corrupting the
+    prompt-toolkit input line (Pattern 6 from Phase 2 research).
     """
     # -- Startup --
     settings = load_settings()
@@ -35,64 +47,60 @@ async def async_main() -> None:
     agent = create_agent(model_string)
     history = ConversationHistory()
     signal_state = SignalState()
+    display = Display()
+    session = create_prompt_session(settings.history_path)
+
+    # Configure shell tool to use display for streaming output and styled approval
+    set_display(display)
 
     loop = asyncio.get_event_loop()
     setup_signal_handler(loop, signal_state)
 
-    # Derive a friendly name from the model string for the banner
+    # Rich-styled startup banner
     friendly_name = settings.default_model
-    print()
-    print(f"  codagent v{__version__}")
-    print(f"  Model: {friendly_name} ({model_string})")
-    print(f"  Mode: {settings.mode}")
-    print(f"  Type your request or Ctrl-C to exit.")
-    print()
+    display.console.print()
+    display.console.print(f"  [bold bright_cyan]codagent[/bold bright_cyan] v{__version__}")
+    display.console.print(f"  [dim]Model:[/dim] {friendly_name} ({model_string})")
+    display.console.print(f"  [dim]Mode:[/dim] {settings.mode}")
+    display.console.print(f"  [dim]Enter submits \u00b7 Escape+Enter for newline \u00b7 Ctrl-C to exit[/dim]")
+    display.console.print()
 
     # -- REPL Loop --
-    while True:
-        try:
-            # Non-blocking input via run_in_executor keeps the event loop
-            # responsive for Ctrl-C during the input prompt (Pitfall 1 & 7).
-            user_input = await loop.run_in_executor(None, _get_input)
-        except (EOFError, KeyboardInterrupt):
-            # EOFError: piped input ended. KeyboardInterrupt: fallback.
-            break
+    with patch_stdout():
+        while True:
+            try:
+                user_input = await get_user_input(session)
+            except (EOFError, KeyboardInterrupt):
+                break
 
-        if not user_input or not user_input.strip():
-            continue
+            if not user_input or not user_input.strip():
+                continue
 
-        stripped = user_input.strip().lower()
-        if stripped in ("exit", "quit"):
-            break
+            stripped = user_input.strip()
+            if stripped.lower() in ("exit", "quit", "/exit"):
+                break
 
-        # Create the agent task so the signal handler can cancel it
-        signal_state.agent_task = asyncio.create_task(
-            run_agent_turn(agent, user_input.strip(), history)
-        )
+            # Show the user's prompt in a styled panel
+            display.show_panel(stripped, "user")
 
-        try:
-            response = await signal_state.agent_task
-        except asyncio.CancelledError:
-            # SGNL-01: Ctrl-C during agent run -- return to prompt
-            print("\n[interrupted]")
-            continue
-        except Exception as e:
-            # Don't crash the loop on model/network errors
-            print(f"\n[error] {e}")
-            continue
-        finally:
-            # Clear the task so Ctrl-C at idle exits the program (SGNL-02)
-            signal_state.agent_task = None
+            # Run agent turn with streaming display
+            signal_state.agent_task = asyncio.create_task(
+                run_agent_turn_streaming(agent, stripped, history, display)
+            )
 
-        print(response)
+            try:
+                response = await signal_state.agent_task
+            except asyncio.CancelledError:
+                display.console.print("\n[dim][interrupted][/dim]")
+                continue
+            except Exception as e:
+                display.console.print(f"\n[bold red][error][/bold red] {e}")
+                continue
+            finally:
+                signal_state.agent_task = None
 
     # -- Shutdown --
-    print("Goodbye.")
-
-
-def _get_input() -> str:
-    """Read a line of user input (runs in a thread via run_in_executor)."""
-    return input(">>> ")
+    display.console.print("[dim]Goodbye.[/dim]")
 
 
 # ---------------------------------------------------------------------------
