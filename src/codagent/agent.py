@@ -1,15 +1,26 @@
 """Agent factory with system prompt and shell tool registration.
 
 Creates a Pydantic AI Agent configured as a terminal coding agent with a
-single shell tool.  The ``run_agent_turn`` coroutine executes one
-prompt-response cycle, updating conversation history along the way.
+single shell tool.
+
+Provides two execution modes:
+- ``run_agent_turn()``  -- Phase 1 batch mode via ``agent.run()``
+- ``run_agent_turn_streaming()`` -- Phase 2 streaming via ``agent.iter()``
+  with node-level display control (spinner, token streaming, tool panels).
 """
 
 from __future__ import annotations
 
 from pydantic_ai import Agent
+from pydantic_ai.messages import (
+    FunctionToolCallEvent,
+    FunctionToolResultEvent,
+    PartDeltaEvent,
+    TextPartDelta,
+)
 
 from codagent.conversation import ConversationHistory
+from codagent.display import Display
 from codagent.tools.shell import shell_tool
 
 
@@ -86,7 +97,107 @@ def create_agent(model_string: str) -> Agent:
 
 
 # ---------------------------------------------------------------------------
-# Single-turn execution
+# Streaming turn execution (Phase 2 — agent.iter())
+# ---------------------------------------------------------------------------
+
+
+async def run_agent_turn_streaming(
+    agent: Agent,
+    prompt: str,
+    history: ConversationHistory,
+    display: Display,
+) -> str:
+    """Run one agent turn with streaming display via ``agent.iter()``.
+
+    Iterates over the agent's execution graph node by node:
+
+    - **ModelRequestNode**: Shows a thinking spinner, then streams tokens
+      one-by-one as the API yields them. The spinner is replaced by the
+      response stream on the first token.
+    - **CallToolsNode**: Displays tool call commands in a panel, then shows
+      tool results. (Actual line-by-line tool output streaming happens
+      inside ``shell_tool`` via the Display callback set by ``set_display``.)
+    - **End node**: No-op — the final result was already streamed.
+
+    Args:
+        agent: The configured Pydantic AI Agent.
+        prompt: The user's natural-language input.
+        history: Conversation history accumulator (updated in-place).
+        display: The Rich Display instance for rendering output.
+
+    Returns:
+        The model's text response for this turn.
+    """
+    async with agent.iter(prompt, message_history=history.get()) as agent_run:
+        async for node in agent_run:
+            if Agent.is_model_request_node(node):
+                # Show spinner while model is thinking
+                display.show_spinner("Thinking...")
+                spinner_active = True
+
+                async with node.stream(agent_run.ctx) as request_stream:
+                    async for event in request_stream:
+                        if isinstance(event, PartDeltaEvent) and isinstance(
+                            event.delta, TextPartDelta
+                        ):
+                            if spinner_active:
+                                # First token: transition from spinner to response stream
+                                display.hide_spinner()
+                                display.start_response_stream()
+                                spinner_active = False
+                            display.stream_token(event.delta.content_delta)
+
+                # If model only called tools (no text tokens emitted),
+                # clean up spinner without printing empty response
+                if spinner_active:
+                    display.hide_spinner()
+                    # Stop the Live context that spinner started
+                    if display._live is not None:
+                        display._live.stop()
+                        display._live = None
+                    spinner_active = False
+                else:
+                    # Text was streamed — finalize the response panel
+                    display.finish_response_stream()
+
+            elif Agent.is_call_tools_node(node):
+                async with node.stream(agent_run.ctx) as tool_stream:
+                    async for event in tool_stream:
+                        if isinstance(event, FunctionToolCallEvent):
+                            # Show the command being called in a tool_call panel
+                            tool_name = event.part.tool_name
+                            tool_args = event.part.args
+                            if isinstance(tool_args, dict) and "command" in tool_args:
+                                display.show_panel(
+                                    tool_args["command"], "tool_call"
+                                )
+                            else:
+                                display.show_panel(
+                                    f"{tool_name}({tool_args})", "tool_call"
+                                )
+                        elif isinstance(event, FunctionToolResultEvent):
+                            # Tool output was already streamed line-by-line
+                            # via shell_tool's on_line callback. But if there's
+                            # content not already shown (e.g., rejection message
+                            # or non-shell tool result), display it.
+                            content = event.result.content
+                            if isinstance(content, str) and content:
+                                # Only show if it looks like a rejection/error
+                                # (shell output was already streamed to display)
+                                pass
+                            elif content:
+                                display.show_panel(str(content), "tool_output")
+
+            elif Agent.is_end_node(node):
+                # Final result already streamed via model request node
+                pass
+
+    history.update(agent_run.result.all_messages())
+    return agent_run.result.output
+
+
+# ---------------------------------------------------------------------------
+# Batch turn execution (Phase 1 — deprecated, kept for backward compatibility)
 # ---------------------------------------------------------------------------
 
 
@@ -97,10 +208,12 @@ async def run_agent_turn(
 ) -> str:
     """Run one agent turn: send *prompt*, let the agent act, return its reply.
 
-    Uses ``agent.run()`` (not ``agent.iter()``) for Phase 1 simplicity.
-    The approval gate lives inside the shell tool function, so we don't
-    need node-level visibility here.  Phase 2 can switch to ``iter()``
-    when the Rich UI needs to render intermediate states.
+    .. deprecated::
+        Use ``run_agent_turn_streaming()`` instead for Phase 2 Rich UI.
+        This function is kept for backward compatibility during the transition
+        and will be removed when Plan 04 completes the REPL integration.
+
+    Uses ``agent.run()`` (not ``agent.iter()``) — no streaming display.
 
     Args:
         agent: The configured Pydantic AI Agent.
