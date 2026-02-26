@@ -8,12 +8,16 @@ program cleanly (SGNL-02).
 
 Uses ``loop.add_signal_handler()`` which is event-loop-safe, unlike the
 stdlib ``signal.signal()`` approach.
+
+Phase 2 note: prompt-toolkit's ``prompt_async()`` is fully async and does not
+use ``run_in_executor`` with a blocking thread. This means ``SystemExit`` now
+propagates cleanly -- prompt-toolkit restores terminal state (raw mode, cursor)
+on exit. The forced-exit workaround from Phase 1 is no longer needed.
 """
 
 from __future__ import annotations
 
 import asyncio
-import os
 import signal
 
 
@@ -44,14 +48,9 @@ def setup_signal_handler(
             # Agent is running -- cancel it (returns to prompt)
             state.agent_task.cancel()
         else:
-            # Idle -- exit the program.
-            # Use os._exit(0) instead of raise SystemExit(0) because the
-            # input() thread (run_in_executor) blocks Python's shutdown
-            # sequence — threading._shutdown tries to join the blocked
-            # thread, causing a deadlock and traceback.  os._exit bypasses
-            # the asyncio/threading shutdown entirely.  Safe here because
-            # there is no state to persist at idle.
-            print("\nGoodbye.")
-            os._exit(0)
+            # Idle -- exit the program cleanly.
+            # SystemExit propagates up through prompt-toolkit's prompt_async(),
+            # which properly restores terminal state before exiting.
+            raise SystemExit(0)
 
     loop.add_signal_handler(signal.SIGINT, _handle_sigint)
