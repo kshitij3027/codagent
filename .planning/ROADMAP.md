@@ -36,7 +36,7 @@ Plans:
 - [x] 01-01-PLAN.md — Project scaffolding, config loading, and model provider registry
 - [x] 01-02-PLAN.md — Shell tool with async execution, truncation, timeout, approval gate, and dangerous command blocklist
 - [x] 01-03-PLAN.md — Agent core with system prompt, conversation history, main REPL loop, and signal handling
-- [ ] 01-04-PLAN.md — UAT gap closure: fix rejection handling, dangerous command flow, and Ctrl-C idle exit
+- [x] 01-04-PLAN.md — UAT gap closure: fix rejection handling, dangerous command flow, and Ctrl-C idle exit
 
 ---
 
@@ -55,8 +55,8 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Rich display layer: panel factory, spinner, streaming text and tool output
-- [ ] 02-02-PLAN.md — prompt-toolkit input: PromptSession, FileHistory, slash command completion, key bindings
+- [x] 02-01-PLAN.md — Rich display layer: panel factory, spinner, streaming text and tool output
+- [x] 02-02-PLAN.md — prompt-toolkit input: PromptSession, FileHistory, slash command completion, key bindings
 - [ ] 02-03-PLAN.md — Agent streaming: switch to agent.iter(), streaming shell execution, styled approval
 - [ ] 02-04-PLAN.md — REPL integration: wire display + input + streaming into main loop, clean signal handling
 
@@ -82,8 +82,8 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Agent Loop | 3/4 | UAT gap closure pending | - |
-| 2. Terminal UI | 0/4 | Planned | - |
+| 1. Core Agent Loop | 4/4 | Complete | 2026-02-25 |
+| 2. Terminal UI | 2/4 | In Progress | - |
 | 3. Slash Commands and Runtime Control | 0/0 | Not started | - |
 
 ---
@@ -118,4 +118,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-02-24*
-*Last updated: 2026-02-25 after UAT gap closure planning (01-04-PLAN created)*
+*Last updated: 2026-02-26 after 02-01-PLAN execution (Rich display layer complete)*
