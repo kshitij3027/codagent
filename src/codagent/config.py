@@ -28,6 +28,9 @@ class Settings:
     mode: str = "approval"
     command_timeout: int = 120
     openrouter_model: Optional[str] = None
+    history_path: str = field(
+        default_factory=lambda: os.path.expanduser("~/.coding-agent/history")
+    )
 
 
 # Module-level singleton
@@ -52,6 +55,10 @@ def load_settings() -> Settings:
         mode=os.getenv("DEFAULT_MODE", "approval"),
         command_timeout=int(os.getenv("COMMAND_TIMEOUT", "120")),
         openrouter_model=os.getenv("OPENROUTER_MODEL") or None,
+        history_path=os.getenv(
+            "HISTORY_PATH",
+            os.path.expanduser("~/.coding-agent/history"),
+        ),
     )
 
     return _settings

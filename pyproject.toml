@@ -8,8 +8,10 @@ version = "0.1.0"
 description = "Terminal-based AI coding agent"
 requires-python = ">=3.10"
 dependencies = [
+    "prompt-toolkit>=3.0.52",
     "pydantic-ai-slim[openai,anthropic,openrouter]>=1.63.0",
     "python-dotenv>=1.2.1",
+    "rich>=14.3.3",
 ]
 
 [project.scripts]
