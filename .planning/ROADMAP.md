@@ -10,7 +10,7 @@
 ## Phases
 
 - [x] **Phase 1: Core Agent Loop** - A safe, functional coding agent with plain-text output — the full working system before any UI polish
-- [ ] **Phase 2: Terminal UI** - Rich streaming display, prompt-toolkit input, and polished real-time output panels
+- [x] **Phase 2: Terminal UI** - Rich streaming display, prompt-toolkit input, and polished real-time output panels
 - [ ] **Phase 3: Slash Commands and Runtime Control** - `/model`, `/approval`, `/new` slash commands with tab completion and runtime model/mode switching
 
 ---
@@ -58,7 +58,7 @@ Plans:
 - [x] 02-01-PLAN.md — Rich display layer: panel factory, spinner, streaming text and tool output
 - [x] 02-02-PLAN.md — prompt-toolkit input: PromptSession, FileHistory, slash command completion, key bindings
 - [x] 02-03-PLAN.md — Agent streaming: switch to agent.iter(), streaming shell execution, styled approval
-- [ ] 02-04-PLAN.md — REPL integration: wire display + input + streaming into main loop, clean signal handling
+- [x] 02-04-PLAN.md — REPL integration: wire display + input + streaming into main loop, clean signal handling
 
 ---
 
@@ -83,7 +83,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Core Agent Loop | 4/4 | Complete | 2026-02-25 |
-| 2. Terminal UI | 2/4 | In Progress | - |
+| 2. Terminal UI | 4/4 | Complete | 2026-02-27 |
 | 3. Slash Commands and Runtime Control | 0/0 | Not started | - |
 
 ---
@@ -118,4 +118,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-02-24*
-*Last updated: 2026-02-26 after 02-01-PLAN execution (Rich display layer complete)*
+*Last updated: 2026-02-27 after 02-04-PLAN execution (Phase 2 Terminal UI complete)*

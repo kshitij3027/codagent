@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-02-26T21:48:35Z"
+last_updated: "2026-02-27T07:02:22Z"
 progress:
   total_phases: 2
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # Project State: Coding Agent
@@ -21,21 +21,21 @@ progress:
 
 **Core Value:** The agent reliably translates natural language coding requests into shell commands, executes them, and iterates until the task is done — with a clear, elegant terminal interface that shows exactly what's happening at every step.
 
-**Current Focus:** Phase 2 — Terminal UI
+**Current Focus:** Phase 3 — Slash Commands and Runtime Control
 
 ---
 
 ## Current Position
 
-**Active Phase:** 2 — Terminal UI
-**Active Plan:** 02-04 (next plan of Phase 2)
-**Status:** In progress
+**Active Phase:** 3 — Slash Commands and Runtime Control
+**Active Plan:** Pending (Phase 3 plans not yet created)
+**Status:** Phase 2 complete, Phase 3 ready to plan
 
 ```
-Progress: [########--] 87.5%
+Progress: [##########] 100%
 
 Phase 1: Core Agent Loop       [X] Complete (4/4 plans complete, incl. UAT gap closure)
-Phase 2: Terminal UI           [~] In progress (3/4 plans complete)
+Phase 2: Terminal UI           [X] Complete (4/4 plans complete)
 Phase 3: Slash Commands        [ ] Not started
 ```
 
@@ -46,13 +46,14 @@ Phase 3: Slash Commands        [ ] Not started
 | Metric | Value |
 |--------|-------|
 | Phases total | 3 |
-| Phases complete | 1 |
+| Phases complete | 2 |
 | Requirements total | 19 |
 | Requirements complete | 15 |
 | Plans total | 8 |
-| Plans complete | 7 |
+| Plans complete | 8 |
 
 ---
+| Phase 02 P04 | 5min | 3 tasks | 4 files |
 | Phase 02 P03 | 4min | 2 tasks | 2 files |
 | Phase 02 P02 | 2min | 1 tasks | 4 files |
 | Phase 02 P01 | 2min | 2 tasks | 1 files |
@@ -89,6 +90,10 @@ Phase 3: Slash Commands        [ ] Not started
 | Module-level _display with set_display() in shell.py | Pydantic AI constrains tool signatures; module-level ref lets shell_tool access Display without changing its parameter list |
 | Async wrapper for sync stream_tool_line | on_line callback typed as Awaitable; thin async wrapper bridges sync Display method |
 | Shell output not re-displayed on FunctionToolResultEvent | Already streamed line-by-line via on_line callback during execution; avoids duplicate display |
+| Console stderr routing for Rich output | patch_stdout() intercepts stdout and mangles Rich ANSI codes; stderr bypasses it while going to the same PTY |
+| Signal handler re-registration before each agent turn | prompt-toolkit overrides SIGINT handler during prompt_async(); re-registering ensures Ctrl-C cancels agent tasks |
+| tini as Docker PID 1 | Python as PID 1 has special Linux signal semantics preventing SIGINT delivery; tini forwards signals properly |
+| Display.cleanup() on cancellation | Stops active Live context and resets buffers on Ctrl-C to prevent stale state corrupting next turn |
 
 ### Architecture Notes
 
@@ -99,12 +104,14 @@ Phase 3: Slash Commands        [ ] Not started
 - Use `loop.add_signal_handler(signal.SIGINT, handler)` for Ctrl-C
 - Use `prompt_async()` not `prompt()` in prompt-toolkit (blocking vs async)
 - Use `patch_stdout()` for Rich + prompt-toolkit coexistence
+- Rich Console writes to stderr (not stdout) to bypass patch_stdout() ANSI mangling
+- Re-register SIGINT handler before each agent turn (prompt-toolkit overrides it during prompt_async)
 
 ### Research Flags (verify at implementation time)
 
 - OpenRouter Groq model name strings change without notice — verify against live API before implementing model registry
 - ~~Pydantic AI deferred tools API~~ -- RESOLVED: used in-tool approval gate (simpler for CLI y/n prompt)
-- Rich Live + asyncio async patterns — community-confirmed but not in official Rich docs; test the specific combination (Live + Spinner + streaming text + prompt-toolkit `patch_stdout()`) early in Phase 2
+- ~~Rich Live + asyncio async patterns~~ -- RESOLVED: Works with Console(file=sys.stderr, force_terminal=True). patch_stdout() mangles stdout ANSI; stderr bypass is the fix. Signal handler re-registration needed after each prompt_async() call.
 - Cross-provider history on `/model` switch — confirm exact behavior of `result.all_messages()` when switching providers
 
 ### Stack (pinned versions)
@@ -119,7 +126,7 @@ Phase 3: Slash Commands        [ ] Not started
 ### Todos
 
 - [x] Verify current OpenRouter Groq model name strings before implementing model registry (Phase 1) -- made configurable via OPENROUTER_MODEL env var
-- [ ] Test Rich Live + asyncio combination early in Phase 2 before building full display layer
+- [x] Test Rich Live + asyncio combination early in Phase 2 before building full display layer -- RESOLVED: works with Console on stderr + force_terminal=True; patch_stdout() mangles stdout ANSI codes
 
 ### Blockers
 
@@ -129,9 +136,9 @@ None.
 
 ## Session Continuity
 
-**Last updated:** 2026-02-26 (02-03-PLAN complete -- agent streaming iteration done)
-**Last session:** 2026-02-26T21:48:35Z
-**Next action:** Execute Phase 2 Plan 04 (REPL integration — wire streaming into main loop)
+**Last updated:** 2026-02-27 (02-04-PLAN complete -- Phase 2 Terminal UI complete, REPL integration with post-checkpoint fixes)
+**Last session:** 2026-02-27T07:02:22Z
+**Next action:** Plan Phase 3 (Slash Commands and Runtime Control — /model, /approval, /new)
 
 ---
 *State initialized: 2026-02-24*
