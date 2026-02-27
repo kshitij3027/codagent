@@ -83,6 +83,11 @@ async def async_main() -> None:
             # Show the user's prompt in a styled panel
             display.show_panel(stripped, "user")
 
+            # Re-register signal handler before each agent turn.
+            # prompt-toolkit's prompt_async() may override our SIGINT handler
+            # during input; re-registering ensures Ctrl-C works during agent runs.
+            setup_signal_handler(loop, signal_state)
+
             # Run agent turn with streaming display
             signal_state.agent_task = asyncio.create_task(
                 run_agent_turn_streaming(agent, stripped, history, display)
@@ -91,6 +96,8 @@ async def async_main() -> None:
             try:
                 response = await signal_state.agent_task
             except asyncio.CancelledError:
+                # Clean up any active Live display left by cancellation
+                display.cleanup()
                 display.console.print("\n[dim][interrupted][/dim]")
                 continue
             except Exception as e:

@@ -10,6 +10,8 @@ should exist elsewhere in the codebase — use Display methods instead.
 
 from __future__ import annotations
 
+import sys
+
 from rich import box
 from rich.console import Console
 from rich.live import Live
@@ -78,12 +80,35 @@ class Display:
     """
 
     def __init__(self) -> None:
-        self.console = Console()
+        # Write to stderr to bypass prompt-toolkit's patch_stdout(), which
+        # intercepts stdout writes and mangles ANSI escape codes.  stderr
+        # goes to the same PTY so the user sees identical output.
+        # force_terminal=True ensures ANSI output in Docker containers where
+        # the terminal may not be auto-detected.
+        self.console = Console(file=sys.stderr, force_terminal=True)
         self._live: Live | None = None
         self._buffer: str = ""
         self._tool_buffer: str = ""
         self._streaming: bool = False
         self._spinner_active: bool = False
+
+    def cleanup(self) -> None:
+        """Reset all display state after interruption.
+
+        Stops any active Live context and clears buffers. Called when the
+        agent task is cancelled via Ctrl-C to prevent stale display state
+        from corrupting the next turn.
+        """
+        if self._live is not None:
+            try:
+                self._live.stop()
+            except Exception:
+                pass
+            self._live = None
+        self._buffer = ""
+        self._tool_buffer = ""
+        self._streaming = False
+        self._spinner_active = False
 
     # ------------------------------------------------------------------
     # Static panel rendering
