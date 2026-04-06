@@ -37,7 +37,8 @@ class SlashCommandCompleter(Completer):
     COMMANDS: Dict[str, str] = {
         "/help": "Show available commands",
         "/model": "Switch the active model",
-        "/approval": "Toggle approval/yolo mode",
+        "/approval": "Switch to approval mode",
+        "/yolo": "Switch to yolo mode (auto-execute)",
         "/new": "Clear conversation history",
         "/exit": "Exit the agent",
     }
@@ -47,7 +48,14 @@ class SlashCommandCompleter(Completer):
         document: Document,
         complete_event: object,
     ):
-        """Yield matching slash-command completions."""
+        """Yield matching slash-command completions.
+
+        Handles two completion scenarios:
+        1. Command completion: ``/mo<TAB>`` -> ``/model``
+        2. Argument completion: ``/model cl<TAB>`` -> ``/model claude``
+
+        Currently only ``/model`` supports argument completion (model names).
+        """
         text = document.text_before_cursor
 
         # Only complete when the text is *only* a slash-command fragment
@@ -61,9 +69,24 @@ class SlashCommandCompleter(Completer):
         if stripped != text.lstrip() and not text.startswith("/"):
             return
 
-        # Only complete when the entire input so far is the command
-        # (no spaces after the slash-command prefix)
+        # Branch: argument completion for commands that support it
         if " " in stripped:
+            parts = stripped.split(maxsplit=1)
+            cmd_part = parts[0].lower()
+            arg_part = parts[1] if len(parts) > 1 else ""
+
+            if cmd_part == "/model":
+                # Lazy import to avoid circular imports and keep startup fast
+                from codagent.models import list_models
+
+                for name in list_models():
+                    if name.startswith(arg_part.lower()):
+                        yield Completion(
+                            name,
+                            start_position=-len(arg_part),
+                            display_meta="model",
+                        )
+            # For all other commands with arguments: no completions
             return
 
         for cmd, desc in self.COMMANDS.items():
