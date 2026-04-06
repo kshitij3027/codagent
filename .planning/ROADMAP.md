@@ -74,7 +74,11 @@ Plans:
   3. User types `/new` and the conversation history is cleared; the next prompt starts a fresh session while API keys and model selection are preserved
   4. Tab-completing a partially typed slash command shows all matching options without requiring the user to remember exact command names
 
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Slash command handlers (commands.py) and REPL dispatch wiring
+- [ ] 03-02-PLAN.md — Tab completion: add /yolo, fix /approval description, /model argument completion
 
 ---
 
@@ -84,7 +88,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Core Agent Loop | 4/4 | Complete | 2026-02-25 |
 | 2. Terminal UI | 4/4 | Complete | 2026-02-27 |
-| 3. Slash Commands and Runtime Control | 0/0 | Not started | - |
+| 3. Slash Commands and Runtime Control | 0/2 | In progress | - |
 
 ---
 
@@ -118,4 +122,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-02-24*
-*Last updated: 2026-02-27 after 02-04-PLAN execution (Phase 2 Terminal UI complete)*
+*Last updated: 2026-04-05 after Phase 3 planning (2 plans created)*
