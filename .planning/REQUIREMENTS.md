@@ -12,7 +12,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **CORE-01**: Agent loop using Pydantic AI receives user prompt and iteratively calls tools until task is complete
 - [x] **CORE-02**: System prompt instructs model it is a coding agent, should reason about problems, and use the shell tool
 - [x] **CORE-03**: Conversation history maintained in memory across turns within a session
-- [ ] **CORE-04**: User can reset conversation via `/new` command, clearing history but preserving config
+- [x] **CORE-04**: User can reset conversation via `/new` command, clearing history but preserving config
 
 ### Shell Execution
 
@@ -86,7 +86,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CORE-01 | Phase 1 | Complete |
 | CORE-02 | Phase 1 | Complete |
 | CORE-03 | Phase 1 | Complete |
-| CORE-04 | Phase 3 | Pending |
+| CORE-04 | Phase 3 | Complete |
 | SHEL-01 | Phase 1 | Complete |
 | SHEL-02 | Phase 1 | Complete |
 | SHEL-03 | Phase 1 | Complete |

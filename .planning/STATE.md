@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-last_updated: "2026-04-06T02:46:30.339Z"
+last_updated: "2026-04-06T02:47:01Z"
 progress:
   total_phases: 3
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 10
-  completed_plans: 9
+  completed_plans: 10
 ---
 
 # Project State: Coding Agent
@@ -28,15 +28,15 @@ progress:
 ## Current Position
 
 **Active Phase:** 3 — Slash Commands and Runtime Control
-**Active Plan:** 2 of 2 (03-02 complete)
-**Status:** In progress
+**Active Plan:** 2 of 2 (all plans complete)
+**Status:** Milestone complete
 
 ```
-Progress: [#########-] 90%
+Progress: [##########] 100%
 
 Phase 1: Core Agent Loop       [X] Complete (4/4 plans complete, incl. UAT gap closure)
 Phase 2: Terminal UI           [X] Complete (4/4 plans complete)
-Phase 3: Slash Commands        [~] In progress (1/2 plans complete)
+Phase 3: Slash Commands        [X] Complete (2/2 plans complete)
 ```
 
 ---
@@ -46,11 +46,11 @@ Phase 3: Slash Commands        [~] In progress (1/2 plans complete)
 | Metric | Value |
 |--------|-------|
 | Phases total | 3 |
-| Phases complete | 2 |
+| Phases complete | 3 |
 | Requirements total | 19 |
-| Requirements complete | 15 |
+| Requirements complete | 18 |
 | Plans total | 10 |
-| Plans complete | 9 |
+| Plans complete | 10 |
 
 ---
 | Phase 02 P04 | 5min | 3 tasks | 4 files |
@@ -58,6 +58,7 @@ Phase 3: Slash Commands        [~] In progress (1/2 plans complete)
 | Phase 02 P02 | 2min | 1 tasks | 4 files |
 | Phase 02 P01 | 2min | 2 tasks | 1 files |
 | Phase 03 P02 | 2min | 1 tasks | 1 files |
+| Phase 03 P01 | 4min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -97,6 +98,9 @@ Phase 3: Slash Commands        [~] In progress (1/2 plans complete)
 | Display.cleanup() on cancellation | Stops active Live context and resets buffers on Ctrl-C to prevent stale state corrupting next turn |
 | Lazy import of list_models() in completer | Avoids circular imports and keeps startup fast; only loads model registry when /model tab-completion is triggered |
 | Argument completion only for /model | Other commands with trailing space return no completions; pattern extensible for future argument-bearing commands |
+| TYPE_CHECKING imports in commands.py | Avoids circular imports; Agent, Settings, ConversationHistory, Display only needed for type hints |
+| dispatch_slash_command returns False for unknown | Allows main.py to handle unknown command error display, keeping commands.py focused on known handlers |
+| Slash dispatch before show_panel in REPL | Prevents slash commands from appearing in styled user panels or reaching the LLM |
 
 ### Architecture Notes
 
@@ -139,9 +143,9 @@ None.
 
 ## Session Continuity
 
-**Last updated:** 2026-04-06 (03-02-PLAN complete -- Tab completion for /yolo and /model argument completion)
-**Last session:** 2026-04-06T02:46:30.337Z
-**Next action:** Execute 03-01-PLAN (slash command handlers: /model, /approval, /yolo, /new, /help, /exit)
+**Last updated:** 2026-04-06 (03-01-PLAN complete -- Slash command dispatch system with /model, /approval, /yolo, /new, /help)
+**Last session:** 2026-04-06T02:47:01Z
+**Next action:** All phases complete -- v1.0 milestone achieved
 
 ---
 *State initialized: 2026-02-24*
