@@ -80,6 +80,18 @@ async def async_main() -> None:
             if stripped.lower() in ("exit", "quit", "/exit"):
                 break
 
+            # Handle slash commands before agent turn
+            if stripped.startswith("/"):
+                from codagent.commands import dispatch_slash_command
+                if dispatch_slash_command(stripped, agent, settings, history, display):
+                    continue
+                # Unknown slash command -- show error, do NOT send to agent
+                display.console.print(
+                    f"[bold red]Unknown command:[/bold red] {stripped.split()[0]}. "
+                    "Type /help for available commands."
+                )
+                continue
+
             # Show the user's prompt in a styled panel
             display.show_panel(stripped, "user")
 
