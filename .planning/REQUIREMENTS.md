@@ -24,13 +24,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **MODL-01**: Environment variables loaded from `.env` file on startup (API keys, config)
 - [x] **MODL-02**: Support three model providers: GPT-5 (OpenAI), Claude 4.5 (Anthropic), Groq Code (OpenRouter)
-- [ ] **MODL-03**: User can switch between models at runtime via `/model` slash command
+- [x] **MODL-03**: User can switch between models at runtime via `/model` slash command
 
 ### Execution Modes
 
 - [x] **MODE-01**: Approval mode (default): user confirms each tool call before execution
 - [x] **MODE-02**: Yolo mode: tool calls execute automatically without user confirmation
-- [ ] **MODE-03**: User can toggle between approval and yolo via `/approval` slash command
+- [x] **MODE-03**: User can toggle between approval and yolo via `/approval` slash command
 
 ### Terminal UI
 
@@ -92,10 +92,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHEL-03 | Phase 1 | Complete |
 | MODL-01 | Phase 1 | Complete |
 | MODL-02 | Phase 1 | Complete |
-| MODL-03 | Phase 3 | Pending |
+| MODL-03 | Phase 3 | Complete |
 | MODE-01 | Phase 1 | Complete |
 | MODE-02 | Phase 1 | Complete |
-| MODE-03 | Phase 3 | Pending |
+| MODE-03 | Phase 3 | Complete |
 | DISP-01 | Phase 2 | Complete |
 | DISP-02 | Phase 2 | Complete |
 | DISP-03 | Phase 2 | Complete |
