@@ -67,7 +67,6 @@ def get_model(name: str) -> str:
     else:
         resolved = template
 
-    print(f"[model] Resolved '{name}' -> {resolved}")
     return resolved
 
 
@@ -90,5 +89,4 @@ def get_default_model() -> str:
     """
     settings = get_settings()
     name = settings.default_model
-    print(f"[model] Default model: {name}")
     return get_model(name)
